@@ -237,6 +237,8 @@ class BEALSCrossref:
     def _remove_duplicates(self) -> None:
         """Remove dubplicates in record list."""
 
+        # TODO: Use Bib-Dedupe in final implementation.
+
         no_duplicates = {}
         for record in self.records:
             no_duplicates[record.data.get("doi")] = record
