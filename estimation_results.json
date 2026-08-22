@@ -1,0 +1,79 @@
+{
+    "Jones2008": {
+        "query": "Giddens AND Information*",
+        "executed_query": "Giddens",
+        "yields": {
+            "2xs": 0,
+            "xs": 0,
+            "s": 0,
+            "m": 0,
+            "global": 718
+        }
+    },
+    "Kappos2008": {
+        "query": "(\"culture\" OR \"cultural\") AND (\"IS\" OR \"IT\")",
+        "executed_query": "OR[\"IS\", \"IT\"]",
+        "yields": {
+            "2xs": 0,
+            "xs": 0,
+            "s": 0,
+            "m": 0,
+            "global": 0
+        }
+    },
+    "Krogh2012": {
+        "query": "open source AND motivation",
+        "executed_query": "motivation",
+        "yields": {
+            "2xs": 6,
+            "xs": 8,
+            "s": 13,
+            "m": 14,
+            "global": 122616
+        }
+    },
+    "HeKing2008": {
+        "query": "\"user participation\" OR \"user involvement\" OR \"user engagement\"",
+        "executed_query": "OR[\"user participation\", \"user involvement\", \"user engagement\"]",
+        "yields": {
+            "2xs": 122,
+            "xs": 310,
+            "s": 469,
+            "m": 557,
+            "global": 1037590
+        }
+    },
+    "MouCohenBhattacherjeeEtAl2022": {
+        "query": "\"Protection motivation\" AND (\"information security\" OR \"information systems\")",
+        "executed_query": "\"Protection motivation\"",
+        "yields": {
+            "2xs": 9,
+            "xs": 20,
+            "s": 29,
+            "m": 35,
+            "global": 475535
+        }
+    },
+    "ZazaJosephArmstrong2022a": {
+        "query": "(\"turnover\" OR \"turnover intention\" OR \"intention to leave\" OR \"intention to quit\") AND (\"information technology\" OR \"information systems\" OR \"IT\" OR \"IS\") AND (\"professionals\" OR \"workers\" OR \"employees\" OR \"personnel\")",
+        "executed_query": "OR[\"professionals\", \"workers\", \"employees\", \"personnel\"]",
+        "yields": {
+            "2xs": 19,
+            "xs": 36,
+            "s": 82,
+            "m": 98,
+            "global": 413582
+        }
+    },
+    "ZazaJosephArmstrong2022b": {
+        "query": "(\"meta-analysis\" OR \"meta analysis\" OR \"meta-analyses\") AND (\"turnover\" OR \"turnover intention\" OR \"intention to leave\" OR \"intention to quit\")",
+        "executed_query": "OR[\"turnover\", \"turnover intention\", \"intention to leave\", \"intention to quit\"]",
+        "yields": {
+            "2xs": 48,
+            "xs": 135,
+            "s": 220,
+            "m": 311,
+            "global": 417487
+        }
+    }
+}
