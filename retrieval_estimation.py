@@ -153,10 +153,14 @@ test_queries = {
     'Krogh2012': 'open source AND motivation',
     'HeKing2008': '"user participation" OR "user involvement" OR "user engagement"',
     'MouCohenBhattacherjeeEtAl2022': '"Protection motivation" AND ("information security" OR "information systems")',
+    'SchermannDongusYettonEtAl2016': '("software" OR "information system" OR "information technology" OR "outsourcing") AND ("contract" OR "fixed price" OR "fixed-price" OR "time and materials" OR "cost plus")',
+    'Eisend2019': '("file sharing" OR "piracy" OR pirat*) AND ("digital" OR "software" OR "music" OR "movie")',
+    'MandrellaTrangKolbe2020': '("value cocreation" OR "relational value" OR "IT value") AND ("interorganizational" OR "interfirm" OR "collaborative network" OR "corporate network" OR "cluster" OR "alliance")',
+    'OesterreichAntonTeuteberg2022': '(analytics OR "business intelligence") AND (performance OR value OR benefit OR advantage) AND (firm OR company OR organisation OR organization)',
+    'RobertsJeyarajPullinEtAl2023': '("information systems" OR "information technology") AND ("assimilation" OR "routinization" OR "infusion" OR "management support" OR "performance")',
     'ZazaJosephArmstrong2022a': '("turnover" OR "turnover intention" OR "intention to leave" OR "intention to quit") AND ("information technology" OR "information systems" OR "IT" OR "IS") AND ("professionals" OR "workers" OR "employees" OR "personnel")',
     'ZazaJosephArmstrong2022b': '("meta-analysis" OR "meta analysis" OR "meta-analyses") AND ("turnover" OR "turnover intention" OR "intention to leave" OR "intention to quit")',
 }
-
 
 # Run evaluation
 results = dict()
