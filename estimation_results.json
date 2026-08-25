@@ -1,134 +1,112 @@
 {
-    "Jones2008": {
-        "query": "Giddens AND Information*",
-        "executed_query": "Giddens",
-        "yields": {
-            "2xs": 0,
-            "xs": 0,
-            "s": 0,
-            "m": 0,
-            "global": 718
-        }
-    },
-    "Kappos2008": {
-        "query": "(\"culture\" OR \"cultural\") AND (\"IS\" OR \"IT\")",
-        "executed_query": "OR[\"IS\", \"IT\"]",
-        "yields": {
-            "2xs": 0,
-            "xs": 0,
-            "s": 0,
-            "m": 0,
-            "global": 0
-        }
-    },
     "Krogh2012": {
         "query": "open source AND motivation",
         "executed_query": "motivation",
         "yields": {
-            "2xs": 3,
-            "xs": 6,
-            "s": 7,
-            "m": 9,
-            "global": 122674
+            "2xs": 31,
+            "xs": 68,
+            "s": 128,
+            "m": 281,
+            "global": 122616
         }
     },
     "HeKing2008": {
         "query": "\"user participation\" OR \"user involvement\" OR \"user engagement\"",
         "executed_query": "OR[\"user participation\", \"user involvement\", \"user engagement\"]",
         "yields": {
-            "2xs": 118,
-            "xs": 839,
-            "s": 1182,
-            "m": 1290,
-            "global": 1037801
+            "2xs": 1154,
+            "xs": 3261,
+            "s": 6981,
+            "m": 9795,
+            "global": 1037590
         }
     },
     "MouCohenBhattacherjeeEtAl2022": {
         "query": "\"Protection motivation\" AND (\"information security\" OR \"information systems\")",
         "executed_query": "\"Protection motivation\"",
         "yields": {
-            "2xs": 3,
-            "xs": 65,
-            "s": 80,
-            "m": 108,
-            "global": 475656
+            "2xs": 56,
+            "xs": 184,
+            "s": 339,
+            "m": 606,
+            "global": 475535
         }
     },
     "SchermannDongusYettonEtAl2016": {
         "query": "(\"software\" OR \"information system\" OR \"information technology\" OR \"outsourcing\") AND (\"contract\" OR \"fixed price\" OR \"fixed-price\" OR \"time and materials\" OR \"cost plus\")",
         "executed_query": "OR[\"contract\", \"fixed price\", \"fixed-price\", \"time and materials\", \"cost plus\"]",
         "yields": {
-            "2xs": 11,
-            "xs": 2139,
-            "s": 2564,
-            "m": 4744,
-            "global": 3652564
+            "2xs": 327,
+            "xs": 2843,
+            "s": 5254,
+            "m": 10185,
+            "global": 3654081
         }
     },
     "Eisend2019": {
         "query": "(\"file sharing\" OR \"piracy\" OR pirat*) AND (\"digital\" OR \"software\" OR \"music\" OR \"movie\")",
         "executed_query": "OR[\"file sharing\", \"piracy\", pirat*]",
         "yields": {
-            "2xs": 17,
-            "xs": 149,
-            "s": 193,
-            "m": 382,
-            "global": 189137
+            "2xs": 191,
+            "xs": 522,
+            "s": 1069,
+            "m": 1833,
+            "global": 189312
         }
     },
     "MandrellaTrangKolbe2020": {
         "query": "(\"value cocreation\" OR \"relational value\" OR \"IT value\") AND (\"interorganizational\" OR \"interfirm\" OR \"collaborative network\" OR \"corporate network\" OR \"cluster\" OR \"alliance\")",
         "executed_query": "OR[\"value cocreation\", \"relational value\", \"IT value\"]",
         "yields": {
-            "2xs": 37,
-            "xs": 679,
-            "s": 875,
-            "m": 1843,
-            "global": 1703027
+            "2xs": 596,
+            "xs": 2110,
+            "s": 3719,
+            "m": 6566,
+            "global": 1703887
         }
     },
     "OesterreichAntonTeuteberg2022": {
         "query": "(analytics OR \"business intelligence\") AND (performance OR value OR benefit OR advantage) AND (firm OR company OR organisation OR organization)",
         "executed_query": "OR[firm, company, organisation, organization]",
         "yields": {
-            "2xs": 25,
-            "xs": 108,
-            "s": 120,
-            "m": 261,
-            "global": 476365
+            "2xs": 265,
+            "xs": 576,
+            "s": 1138,
+            "m": 1879,
+            "global": 476498
         }
     },
     "RobertsJeyarajPullinEtAl2023": {
         "query": "(\"information systems\" OR \"information technology\") AND (\"assimilation\" OR \"routinization\" OR \"infusion\" OR \"management support\" OR \"performance\")",
         "executed_query": "OR[\"assimilation\", \"routinization\", \"infusion\", \"management support\", \"performance\"]",
         "yields": {
-            "2xs": 77,
-            "xs": 2102,
-            "s": 2343,
-            "m": 3883,
-            "global": 4730324
+            "2xs": 1221,
+            "xs": 5348,
+            "s": 8945,
+            "m": 14751,
+            "global": 4732965
         }
     },
     "ZazaJosephArmstrong2022a": {
         "query": "(\"turnover\" OR \"turnover intention\" OR \"intention to leave\" OR \"intention to quit\") AND (\"information technology\" OR \"information systems\" OR \"IT\" OR \"IS\") AND (\"professionals\" OR \"workers\" OR \"employees\" OR \"personnel\")",
         "executed_query": "OR[\"professionals\", \"workers\", \"employees\", \"personnel\"]",
         "yields": {
-            "2xs": 16,
-            "xs": 55,
-            "s": 55,
-            "m": 72,
-            "global": 413683
+            "2xs": 128,
+            "xs": 312,
+            "s": 584,
+            "m": 964,
+            "global": 413582
         }
     },
     "ZazaJosephArmstrong2022b": {
         "query": "(\"meta-analysis\" OR \"meta analysis\" OR \"meta-analyses\") AND (\"turnover\" OR \"turnover intention\" OR \"intention to leave\" OR \"intention to quit\")",
         "executed_query": "OR[\"turnover\", \"turnover intention\", \"intention to leave\", \"intention to quit\"]",
         "yields": {
-            "2xs": 18,
-            "xs": 109,
-            "s": 127,
-            "m": 144,
-            "global": 417660
+            "2xs": 179,
+            "xs": 682,
+            "s": 1285,
+            "m": 2741,
+            "global": 417487
         }
     }
 }

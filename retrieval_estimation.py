@@ -104,7 +104,6 @@ basket_M = {
     "1046-8188"
 }
 
-
 def estimate_yield(query: Query, journals: set = None) -> tuple[int, Query]:
     """Estimate total retrieved results and return minimal query structure that is executed."""
     # Leaf query -> API keyword search
@@ -112,15 +111,18 @@ def estimate_yield(query: Query, journals: set = None) -> tuple[int, Query]:
         keywords = quote(query.value)
 
         if journals:
-            hits = 0
-            for issn in journals:
-                api.url = (
-                    f"https://api.crossref.org/v1/journals/{issn}/works"
-                    f"?query.title={keywords}"
-                )
-            hits += api.get_len_total()
+            issn_filter = ",".join(f"issn:{issn}" for issn in journals)
+            api.url = (
+                f"https://api.crossref.org/v1/works"
+                f"?query.title={keywords}"
+                f"&filter={issn_filter}"
+            )
+            hits = api.get_len_total()
         else:
-            api.url = f"https://api.crossref.org/v1/works?query.title={keywords}"
+            api.url = (
+                f"https://api.crossref.org/v1/works"
+                f"?query.title={keywords}"
+            )
             hits = api.get_len_total()
 
         return hits, query
@@ -148,8 +150,8 @@ def estimate_yield(query: Query, journals: set = None) -> tuple[int, Query]:
 
 
 test_queries = {
-    'Jones2008': 'Giddens AND Information*',
-    'Kappos2008': '("culture" OR "cultural") AND ("IS" OR "IT")',
+    # 'Jones2008': 'Giddens AND Information*',
+    # 'Kappos2008': '("culture" OR "cultural") AND ("IS" OR "IT")',
     'Krogh2012': 'open source AND motivation',
     'HeKing2008': '"user participation" OR "user involvement" OR "user engagement"',
     'MouCohenBhattacherjeeEtAl2022': '"Protection motivation" AND ("information security" OR "information systems")',
