@@ -7,6 +7,10 @@
             "xs": 68,
             "s": 128,
             "m": 281,
+            "2xs_time": 0,
+            "xs_time": 1,
+            "s_time": 3,
+            "m_time": 8,
             "global": 122616
         }
     },
@@ -14,55 +18,15 @@
         "query": "\"user participation\" OR \"user involvement\" OR \"user engagement\"",
         "executed_query": "OR[\"user participation\", \"user involvement\", \"user engagement\"]",
         "yields": {
-            "2xs": 1154,
-            "xs": 3261,
-            "s": 6981,
-            "m": 9795,
+            "2xs": 1157,
+            "xs": 3270,
+            "s": 6990,
+            "m": 9804,
+            "2xs_time": 31,
+            "xs_time": 179,
+            "s_time": 386,
+            "m_time": 536,
             "global": 1037590
-        }
-    },
-    "MouCohenBhattacherjeeEtAl2022": {
-        "query": "\"Protection motivation\" AND (\"information security\" OR \"information systems\")",
-        "executed_query": "\"Protection motivation\"",
-        "yields": {
-            "2xs": 56,
-            "xs": 184,
-            "s": 339,
-            "m": 606,
-            "global": 475535
-        }
-    },
-    "SchermannDongusYettonEtAl2016": {
-        "query": "(\"software\" OR \"information system\" OR \"information technology\" OR \"outsourcing\") AND (\"contract\" OR \"fixed price\" OR \"fixed-price\" OR \"time and materials\" OR \"cost plus\")",
-        "executed_query": "OR[\"contract\", \"fixed price\", \"fixed-price\", \"time and materials\", \"cost plus\"]",
-        "yields": {
-            "2xs": 327,
-            "xs": 2843,
-            "s": 5254,
-            "m": 10185,
-            "global": 3654081
-        }
-    },
-    "Eisend2019": {
-        "query": "(\"file sharing\" OR \"piracy\" OR pirat*) AND (\"digital\" OR \"software\" OR \"music\" OR \"movie\")",
-        "executed_query": "OR[\"file sharing\", \"piracy\", pirat*]",
-        "yields": {
-            "2xs": 191,
-            "xs": 522,
-            "s": 1069,
-            "m": 1833,
-            "global": 189312
-        }
-    },
-    "MandrellaTrangKolbe2020": {
-        "query": "(\"value cocreation\" OR \"relational value\" OR \"IT value\") AND (\"interorganizational\" OR \"interfirm\" OR \"collaborative network\" OR \"corporate network\" OR \"cluster\" OR \"alliance\")",
-        "executed_query": "OR[\"value cocreation\", \"relational value\", \"IT value\"]",
-        "yields": {
-            "2xs": 596,
-            "xs": 2110,
-            "s": 3719,
-            "m": 6566,
-            "global": 1703887
         }
     },
     "OesterreichAntonTeuteberg2022": {
@@ -73,6 +37,10 @@
             "xs": 576,
             "s": 1138,
             "m": 1879,
+            "2xs_time": 5,
+            "xs_time": 12,
+            "s_time": 28,
+            "m_time": 55,
             "global": 476498
         }
     },
@@ -83,7 +51,11 @@
             "2xs": 1221,
             "xs": 5348,
             "s": 8945,
-            "m": 14751,
+            "m": 14753,
+            "2xs_time": 21,
+            "xs_time": 186,
+            "s_time": 306,
+            "m_time": 495,
             "global": 4732965
         }
     },
@@ -95,6 +67,10 @@
             "xs": 312,
             "s": 584,
             "m": 964,
+            "2xs_time": 3,
+            "xs_time": 19,
+            "s_time": 40,
+            "m_time": 57,
             "global": 413582
         }
     },
@@ -106,6 +82,10 @@
             "xs": 682,
             "s": 1285,
             "m": 2741,
+            "2xs_time": 3,
+            "xs_time": 47,
+            "s_time": 77,
+            "m_time": 171,
             "global": 417487
         }
     }

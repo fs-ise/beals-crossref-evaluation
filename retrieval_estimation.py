@@ -13,7 +13,7 @@ from search_query.constants import Operators
 
 
 api = crossref_api.CrossrefAPI(
-    url="https://api.crossref.org/"
+    url="https://api.crossref.org/",
 )
 
 
@@ -104,30 +104,34 @@ basket_M = {
     "1046-8188"
 }
 
-def estimate_yield(query: Query, journals: set = None) -> tuple[int, Query]:
+def estimate_yield(query: Query, journals: set = None, time_filter: bool = False) -> tuple[int, Query]:
     """Estimate total retrieved results and return minimal query structure that is executed."""
     # Leaf query -> API keyword search
     if not query.operator:
         keywords = quote(query.value)
 
+        filters = []
+
         if journals:
-            issn_filter = ",".join(f"issn:{issn}" for issn in journals)
-            api.url = (
-                f"https://api.crossref.org/v1/works"
-                f"?query.title={keywords}"
-                f"&filter={issn_filter}"
-            )
-            hits = api.get_len_total()
-        else:
-            api.url = (
-                f"https://api.crossref.org/v1/works"
-                f"?query.title={keywords}"
-            )
-            hits = api.get_len_total()
+            filters.extend(f"issn:{issn}" for issn in journals)
+
+        if time_filter:
+            filters.append(f"from-pub-date:2025-01-01,until-pub-date:2025-12-31")
+
+
+        api.url = (
+            f"https://api.crossref.org/v1/works"
+            f"?query.title={keywords}"
+        )
+
+        if filters:
+            api.url += f"&filter={','.join(filters)}"
+
+        hits = api.get_len_total()
 
         return hits, query
 
-    results = [estimate_yield(child, journals) for child in query.children]
+    results = [estimate_yield(child, journals, time_filter) for child in query.children]
 
     # Every OR branch is executed
     if query.value == Operators.OR:
@@ -154,10 +158,10 @@ test_queries = {
     # 'Kappos2008': '("culture" OR "cultural") AND ("IS" OR "IT")',
     'Krogh2012': 'open source AND motivation',
     'HeKing2008': '"user participation" OR "user involvement" OR "user engagement"',
-    'MouCohenBhattacherjeeEtAl2022': '"Protection motivation" AND ("information security" OR "information systems")',
-    'SchermannDongusYettonEtAl2016': '("software" OR "information system" OR "information technology" OR "outsourcing") AND ("contract" OR "fixed price" OR "fixed-price" OR "time and materials" OR "cost plus")',
-    'Eisend2019': '("file sharing" OR "piracy" OR pirat*) AND ("digital" OR "software" OR "music" OR "movie")',
-    'MandrellaTrangKolbe2020': '("value cocreation" OR "relational value" OR "IT value") AND ("interorganizational" OR "interfirm" OR "collaborative network" OR "corporate network" OR "cluster" OR "alliance")',
+    #'MouCohenBhattacherjeeEtAl2022': '"Protection motivation" AND ("information security" OR "information systems")',
+    #'SchermannDongusYettonEtAl2016': '("software" OR "information system" OR "information technology" OR "outsourcing") AND ("contract" OR "fixed price" OR "fixed-price" OR "time and materials" OR "cost plus")',
+    #'Eisend2019': '("file sharing" OR "piracy" OR pirat*) AND ("digital" OR "software" OR "music" OR "movie")',
+    #'MandrellaTrangKolbe2020': '("value cocreation" OR "relational value" OR "IT value") AND ("interorganizational" OR "interfirm" OR "collaborative network" OR "corporate network" OR "cluster" OR "alliance")',
     'OesterreichAntonTeuteberg2022': '(analytics OR "business intelligence") AND (performance OR value OR benefit OR advantage) AND (firm OR company OR organisation OR organization)',
     'RobertsJeyarajPullinEtAl2023': '("information systems" OR "information technology") AND ("assimilation" OR "routinization" OR "infusion" OR "management support" OR "performance")',
     'ZazaJosephArmstrong2022a': '("turnover" OR "turnover intention" OR "intention to leave" OR "intention to quit") AND ("information technology" OR "information systems" OR "IT" OR "IS") AND ("professionals" OR "workers" OR "employees" OR "personnel")',
@@ -180,6 +184,17 @@ for query_id, query_str in test_queries.items():
     m_yield = estimate_yield(query, basket_M)[0]
     cumulative_m_yield = cumulative_s_yield + m_yield
 
+    xxs_yield_time = estimate_yield(query, basket_2XS, True)[0]
+
+    xs_yield_time = estimate_yield(query, basket_XS, True)[0]
+    cumulative_xs_yield_time = xxs_yield_time + xs_yield_time
+
+    s_yield_time = estimate_yield(query, basket_S, True)[0]
+    cumulative_s_yield_time = cumulative_xs_yield_time + s_yield_time
+
+    m_yield_time = estimate_yield(query, basket_M, True)[0]
+    cumulative_m_yield_time = cumulative_s_yield_time + m_yield_time
+
     global_yield, executed_query = estimate_yield(query)
 
     results[query_id] = {
@@ -190,6 +205,10 @@ for query_id, query_str in test_queries.items():
             "xs": cumulative_xs_yield,
             "s": cumulative_s_yield,
             "m": cumulative_m_yield,
+            "2xs_time": xxs_yield_time,
+            "xs_time": cumulative_xs_yield_time,
+            "s_time": cumulative_s_yield_time,
+            "m_time": cumulative_m_yield_time,
             "global": global_yield,
         },
     }
