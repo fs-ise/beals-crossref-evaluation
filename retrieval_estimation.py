@@ -14,6 +14,7 @@ from search_query.constants import Operators
 
 api = crossref_api.CrossrefAPI(
     url="https://api.crossref.org/",
+    email="karlschnickmann@gmail.com"
 )
 
 
@@ -196,6 +197,7 @@ for query_id, query_str in test_queries.items():
     cumulative_m_yield_time = cumulative_s_yield_time + m_yield_time
 
     global_yield, executed_query = estimate_yield(query)
+    global_yield_time = estimate_yield(query, None, True)[0]
 
     results[query_id] = {
         "query": query_str,
@@ -205,11 +207,12 @@ for query_id, query_str in test_queries.items():
             "xs": cumulative_xs_yield,
             "s": cumulative_s_yield,
             "m": cumulative_m_yield,
+            "global": global_yield,
             "2xs_time": xxs_yield_time,
             "xs_time": cumulative_xs_yield_time,
             "s_time": cumulative_s_yield_time,
             "m_time": cumulative_m_yield_time,
-            "global": global_yield,
+            "global_time": global_yield_time,
         },
     }
 

@@ -7,7 +7,7 @@ from pathlib import Path
 INPUT_FILE = Path("estimation_results.json")
 OUTPUT_FILE = Path("yields_table.md")
 
-GROUPS = ["2xs", "xs", "s", "m", "2xs_time", "xs_time", "s_time", "m_time", "global"]
+GROUPS = ["2xs", "xs", "s", "m", "global", "2xs_time", "xs_time", "s_time", "m_time", "global_time"]
 
 
 def load_data(filename: Path) -> dict:
