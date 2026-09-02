@@ -1,0 +1,98 @@
+{
+    "Krogh2012": {
+        "query": "open source AND motivation",
+        "executed_query": "motivation",
+        "yields": {
+            "2xs": 31,
+            "xs": 68,
+            "s": 128,
+            "m": 281,
+            "global": 122616,
+            "2xs_time": 0,
+            "xs_time": 1,
+            "s_time": 3,
+            "m_time": 8,
+            "global_time": 14386
+        }
+    },
+    "HeKing2008": {
+        "query": "\"user participation\" OR \"user involvement\" OR \"user engagement\"",
+        "executed_query": "OR[\"user participation\", \"user involvement\", \"user engagement\"]",
+        "yields": {
+            "2xs": 1157,
+            "xs": 3273,
+            "s": 6993,
+            "m": 9807,
+            "global": 1037590,
+            "2xs_time": 31,
+            "xs_time": 179,
+            "s_time": 386,
+            "m_time": 536,
+            "global_time": 96163
+        }
+    },
+    "OesterreichAntonTeuteberg2022": {
+        "query": "(analytics OR \"business intelligence\") AND (performance OR value OR benefit OR advantage) AND (firm OR company OR organisation OR organization)",
+        "executed_query": "OR[firm, company, organisation, organization]",
+        "yields": {
+            "2xs": 265,
+            "xs": 576,
+            "s": 1138,
+            "m": 1879,
+            "global": 476498,
+            "2xs_time": 5,
+            "xs_time": 12,
+            "s_time": 28,
+            "m_time": 55,
+            "global_time": 25120
+        }
+    },
+    "RobertsJeyarajPullinEtAl2023": {
+        "query": "(\"information systems\" OR \"information technology\") AND (\"assimilation\" OR \"routinization\" OR \"infusion\" OR \"management support\" OR \"performance\")",
+        "executed_query": "OR[\"assimilation\", \"routinization\", \"infusion\", \"management support\", \"performance\"]",
+        "yields": {
+            "2xs": 1221,
+            "xs": 5349,
+            "s": 8947,
+            "m": 14755,
+            "global": 4732965,
+            "2xs_time": 21,
+            "xs_time": 186,
+            "s_time": 306,
+            "m_time": 495,
+            "global_time": 331487
+        }
+    },
+    "ZazaJosephArmstrong2022a": {
+        "query": "(\"turnover\" OR \"turnover intention\" OR \"intention to leave\" OR \"intention to quit\") AND (\"information technology\" OR \"information systems\" OR \"IT\" OR \"IS\") AND (\"professionals\" OR \"workers\" OR \"employees\" OR \"personnel\")",
+        "executed_query": "OR[\"professionals\", \"workers\", \"employees\", \"personnel\"]",
+        "yields": {
+            "2xs": 128,
+            "xs": 312,
+            "s": 584,
+            "m": 964,
+            "global": 413582,
+            "2xs_time": 3,
+            "xs_time": 19,
+            "s_time": 40,
+            "m_time": 57,
+            "global_time": 35216
+        }
+    },
+    "ZazaJosephArmstrong2022b": {
+        "query": "(\"meta-analysis\" OR \"meta analysis\" OR \"meta-analyses\") AND (\"turnover\" OR \"turnover intention\" OR \"intention to leave\" OR \"intention to quit\")",
+        "executed_query": "OR[\"turnover\", \"turnover intention\", \"intention to leave\", \"intention to quit\"]",
+        "yields": {
+            "2xs": 179,
+            "xs": 682,
+            "s": 1285,
+            "m": 2741,
+            "global": 417487,
+            "2xs_time": 3,
+            "xs_time": 47,
+            "s_time": 77,
+            "m_time": 171,
+            "global_time": 46997
+        }
+    }
+}
