@@ -6,12 +6,14 @@ import datetime
 import logging
 import re
 import typing
+from urllib.parse import quote
 
 from colrev.packages.crossref.src import crossref_api
 from colrev.record.record import Record
 
 from search_query import AndQuery
 from search_query import OrQuery
+from search_query.constants import Operators
 from search_query.query import Query
 from search_query.query import SearchField
 
@@ -22,18 +24,19 @@ class BEALSCrossref:
     BEALS prototype for Crossref
     """
 
-    _api_url = "https://api.crossref.org/"
+    _api_url = "https://api.crossref.org/v1/"
 
     def __init__(self, query: Query) -> None:
         self.value: str = query.value
         self.operator: bool = query.operator
-        self.search_field: typing.Optional[SearchField] = query.search_field
+        self.search_field: typing.Optional[SearchField] = query.field
         self.children: typing.List[BEALSCrossref] = [
             BEALSCrossref(child) for child in query.children
         ]
         self.records: typing.List[Record] = []
 
-        self.api = crossref_api.CrossrefAPI(params={})
+        self.api = crossref_api.CrossrefAPI(url="https://api.crossref.org/")
+        self.api_filters = None
 
         self.logger = logging.getLogger(__name__)
 
@@ -49,7 +52,7 @@ class BEALSCrossref:
 
         # build query url
         url = self.build_url(self.value)
-        self.api.params = {"url": url}
+        self.api.url = url
 
         num_res = self.api.get_len_total()
 
@@ -66,12 +69,43 @@ class BEALSCrossref:
         self.logger.info("Finished and retrieved %d records.", len(records))
 
         return records
+
+
+    def estimate_total_yield(self) -> int:
+        """Estimate and return total yield of the query."""
+        # Leaf query -> API keyword search
+        if not self.operator:
+            self.api.url = self.build_url(self.value)
+
+            hits = self.api.get_len_total()
+
+            return hits
+
+        query_yields = [child.estimate_total_yield() for child in self.children]
+
+        # Every OR branch is executed
+        if self.value == Operators.OR:
+            return sum(query_yields)
+
+        # Only the lowest-yielding AND branch is executed
+        elif self.value == Operators.AND:
+            return min(query_yields)
+
+        else:
+            raise ValueError("Operator not supported.")
+
     
     def build_url(self, query: str) -> str:
         """Build query url."""
 
-        # query = query.replace(" ", "+")
-        # url = self._api_url + "works?" + "query.title=%22" + query + "%22"
+        keywords = quote(query)
+        url = (
+            f"https://api.crossref.org/v1/works"
+            f"?query.title={keywords}"
+        )
+
+        if self.api_filters:
+            url += self.api_filters
 
         # Add time range filter
         # filter_date = "filter=from-pub-date:2015-01-01"
@@ -82,19 +116,19 @@ class BEALSCrossref:
         # url = self._api_url + "works?" + filter + "&" + "query.title=%22" + query + "%22"
 
         # URL with journal endpoint
-        url = (
-            self._api_url
+        # url = (
+        # self._api_url
+        
+        # Journal of strategic Information systems
+        # + "journals/0963-8687/works?"
 
-            # Journal of strategic Information systems
-            + "journals/0963-8687/works?"
+        # + "query.title=%22"
+        # + query
+        # + "%22"
 
-            + "query.title=%22"
-            + query
-            + "%22"
-
-            # Only DOI and title are needed for evaluation
-            + "&select=DOI,title"
-        )
+        # Only DOI and title are needed for evaluation
+        # + "&select=DOI,title"
+        # )
 
         return url
 
@@ -135,11 +169,11 @@ class BEALSCrossref:
         """Estimate lowest yield."""
 
         if not self.operator:
-            self.api.params = {"url": self.build_url(self.value)}
+            self.api.url = self.build_url(self.value)
             self.path_length = self.api.get_len_total()
             return self
 
-        if self.operator:
+        else:
             if len(self.children) == 0:
                 raise ValueError("AndQuery must have at least one child.")
 
@@ -255,43 +289,43 @@ class BEALSCrossref:
 if __name__ == "__main__":
     # Use Case 1
     # (strategy OR strategic) AND (technology OR digital) 
-    sub_search_query01 = OrQuery(["strategy", "strategic"], search_field="ti")
-    sub_search_query02 = OrQuery(["technology", "digital"], search_field="ti")
-    search_query_01 = AndQuery([sub_search_query01, sub_search_query02], search_field="ti")
+    sub_search_query01 = OrQuery(["strategy", "strategic"], field="ti")
+    sub_search_query02 = OrQuery(["technology", "digital"], field="ti")
+    search_query_01 = AndQuery([sub_search_query01, sub_search_query02], field="ti")
 
     # Use Case 2
     # (("knowledge work" OR "digital labor" OR "services") AND ("platform" OR "market" OR "outsourcing")) OR "microsourcing"  
-    sub_search_query03 = OrQuery(["knowledge work", "digital labor", "services"], search_field="ti")
-    sub_search_query04 = OrQuery(["platform", "market", "outsourcing"], search_field="ti")
-    sub_search_query05 = AndQuery([sub_search_query03, sub_search_query04], search_field="ti")
-    search_query_02 = OrQuery([sub_search_query05, "microsourcing"], search_field="ti")
+    sub_search_query03 = OrQuery(["knowledge work", "digital labor", "services"], field="ti")
+    sub_search_query04 = OrQuery(["platform", "market", "outsourcing"], field="ti")
+    sub_search_query05 = AndQuery([sub_search_query03, sub_search_query04], field="ti")
+    search_query_02 = OrQuery([sub_search_query05, "microsourcing"], field="ti")
 
     # Use Case 2.1 refined query by including plural/ singular forms ("service", "platforms", "markets")
     # (("knowledge work" OR "digital labor" OR "services" OR "service") AND ("platform" OR "platforms" OR "market" OR "markets" OR "outsourcing")) OR "microsourcing"
-    sub_search_query20 = OrQuery(["knowledge work", "digital labor", "service", "services"], search_field="ti")
-    sub_search_query21 = OrQuery(["platform", "platforms", "market", "markets", "outsourcing"], search_field="ti")
-    sub_search_query22 = AndQuery([sub_search_query20, sub_search_query21], search_field="ti")
-    search_query_02_1 = OrQuery([sub_search_query22, "microsourcing"], search_field="ti")
+    sub_search_query20 = OrQuery(["knowledge work", "digital labor", "service", "services"], field="ti")
+    sub_search_query21 = OrQuery(["platform", "platforms", "market", "markets", "outsourcing"], field="ti")
+    sub_search_query22 = AndQuery([sub_search_query20, sub_search_query21], field="ti")
+    search_query_02_1 = OrQuery([sub_search_query22, "microsourcing"], field="ti")
 
     # Use Case 3
     # (“Artificial Intelligence” OR “substitution” OR “augmentation” OR “assemblage”) AND 
     # (“ethics” OR “transparency” OR “accountability” OR “privacy” OR “maleficence” OR “justice” OR “fairness” OR “beneficence” OR “sustainability” OR “responsibility” OR “autonomy”) AND
     # (“management” OR “strategy” OR “corporate strategy” OR “business strategy” OR “functional strategy” OR “planning processes” OR “strategic processes” OR “tactical processes” OR “operational processes”)
-    sub_search_query06 = OrQuery(["Artificial Intelligence", "substitution", "augmentation", "assemblage"], search_field="ti")
+    sub_search_query06 = OrQuery(["Artificial Intelligence", "substitution", "augmentation", "assemblage"], field="ti")
     sub_search_query07 = OrQuery(["ethics", "transparency", "accountability", "privacy", "maleficence", "justice", 
-                                "fairness", "beneficence", "sustainability", "responsibility", "autonomy"], search_field="ti")
+                                "fairness", "beneficence", "sustainability", "responsibility", "autonomy"], field="ti")
     sub_search_query08 = OrQuery(["management", "strategy", "corporate strategy", "business strategy", 
                                 "functional strategy", "planning processes", "strategic processes", 
-                                "tactical processes", "operational processes"], search_field="ti")
-    search_query_03 = AndQuery([sub_search_query06, sub_search_query07, sub_search_query08], search_field="ti")
+                                "tactical processes", "operational processes"], field="ti")
+    search_query_03 = AndQuery([sub_search_query06, sub_search_query07, sub_search_query08], field="ti")
 
     # Use Case 4
     # (("knowledge work" OR "digital labor" OR "services") AND (("platform" AND "market") OR "outsourcing")) OR "microsourcing"  
-    sub_search_query09 = OrQuery(["knowledge work", "digital labor", "services"], search_field="ti")
-    sub_search_query10 = AndQuery(["platform", "market"], search_field="ti")
-    sub_search_query11 = OrQuery([sub_search_query10, "outsourcing"], search_field="ti")
-    sub_search_query12 = AndQuery([sub_search_query09, sub_search_query11], search_field="ti")
-    search_query_04 = OrQuery([sub_search_query12, "microsourcing"], search_field="ti")
+    sub_search_query09 = OrQuery(["knowledge work", "digital labor", "services"], field="ti")
+    sub_search_query10 = AndQuery(["platform", "market"], field="ti")
+    sub_search_query11 = OrQuery([sub_search_query10, "outsourcing"], field="ti")
+    sub_search_query12 = AndQuery([sub_search_query09, sub_search_query11], field="ti")
+    search_query_04 = OrQuery([sub_search_query12, "microsourcing"], field="ti")
 
     # Start BEALS
     beals = BEALSCrossref(search_query_01)
