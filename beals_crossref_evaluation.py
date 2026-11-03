@@ -26,17 +26,17 @@ class BEALSCrossref:
 
     _api_url = "https://api.crossref.org/v1/"
 
-    def __init__(self, query: Query) -> None:
+    def __init__(self, query: Query, api_filters: str = None) -> None:
         self.value: str = query.value
         self.operator: bool = query.operator
         self.search_field: typing.Optional[SearchField] = query.field
         self.children: typing.List[BEALSCrossref] = [
-            BEALSCrossref(child) for child in query.children
+            BEALSCrossref(child, api_filters) for child in query.children
         ]
         self.records: typing.List[Record] = []
 
         self.api = crossref_api.CrossrefAPI(url="https://api.crossref.org/")
-        self.api_filters = None
+        self.api_filters = api_filters
 
         self.logger = logging.getLogger(__name__)
 
