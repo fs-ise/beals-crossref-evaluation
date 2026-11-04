@@ -1,6 +1,7 @@
 import asyncio
 
 import flet as ft
+import json
 from search_query.exception import QuerySyntaxError
 
 from search_query.parser import parse
@@ -100,23 +101,32 @@ def main(page: ft.Page):
         ],
     )
 
-    # Start the prototype
-    async def start():
-        # Lock in go button and reset status values before a new run
-        go_button.disabled = True
+    records = []
+
+    def reset_status():
         yield_status.value = ""
         progress_bar.value = 0
         remaining_status.value = ""
         timer_status.value = f"0.0 s"
         retrieval_status.value = ""
         doi_list.controls.clear()
+        download_button.disabled = True
+        go_button.disabled = False
+        page.update()
+
+    # Start the prototype
+    async def start():
+        nonlocal records
+
+        reset_status()
+        go_button.disabled = True
         page.update()
 
         start_date = read_date(start_date_field)
         end_date = read_date(end_date_field)
 
         if start_date_field.error or end_date_field.error:
-            page.update()
+            reset_status()
             return
 
         user_query = query_input_field.value or ""
@@ -124,7 +134,7 @@ def main(page: ft.Page):
         # Query field should not be blank
         if not user_query.strip():
             query_input_field.error = "Blank query field."
-            page.update()
+            reset_status()
             return
 
         query_input_field.error = None
@@ -138,7 +148,7 @@ def main(page: ft.Page):
             query_obj.field = Fields.TITLE
         except QuerySyntaxError:
             query_input_field.error = "Invalid query syntax."
-            page.update()
+            reset_status()
             return
 
         selected_scope = journal_choice.value
@@ -150,9 +160,8 @@ def main(page: ft.Page):
         beals = BEALSCrossref(query_obj, api_filters)
 
         estimated_total_yield = beals.estimate_total_yield()
-        yield_status.value = f"Estimated records: {estimated_total_yield}"
+        yield_status.value = f"Estimated records to retrieve: {estimated_total_yield}"
 
-        # TODO: Replace with exact API rate limits
         requests_per_second = 5
         records_per_request = 3
 
@@ -199,6 +208,7 @@ def main(page: ft.Page):
             doi_list.controls = [
                 ft.Text(doi, selectable=True) for doi in dois
             ]
+            download_button.disabled = False
 
         finally:
             go_button.disabled = False
@@ -206,6 +216,25 @@ def main(page: ft.Page):
 
     query_input_field.on_submit = start
     go_button = ft.Button(content="Go", on_click=start)
+
+    async def download():
+        if not records:
+            return
+
+        data = [record.data for record in records]
+        result = json.dumps(data, ensure_ascii=False, indent=2)
+
+        await ft.FilePicker().save_file(
+            file_name="records.json",
+            src_bytes=result.encode("utf-8"),
+        )
+
+    download_button = ft.Button(
+        content="Save records",
+        icon=ft.Icons.DOWNLOAD,
+        on_click=download,
+        disabled=True,
+    )
 
     # Settings
     settings_card = ft.Container(
@@ -274,8 +303,16 @@ def main(page: ft.Page):
             spacing=12,
             controls=[
                 ft.Text("Results", size=22, weight=ft.FontWeight.BOLD),
-                retrieval_status,
-                doi_list
+                ft.Row(
+                    alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                    wrap=False,
+                    spacing=12,
+                    controls=[
+                        ft.Container(content=retrieval_status, expand=True),
+                        download_button,
+                    ],
+                ),
+                doi_list,
             ],
         ),
     )
