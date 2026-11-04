@@ -162,11 +162,8 @@ def main(page: ft.Page):
         estimated_total_yield = beals.estimate_total_yield()
         yield_status.value = f"Estimated records to retrieve: {estimated_total_yield}"
 
-        requests_per_second = 5
-        records_per_request = 3
-
-        estimated_requests = math.ceil(estimated_total_yield / records_per_request)
-        estimated_seconds = estimated_requests / requests_per_second
+        # setup time + ((estimated total yield / Crossref per-request batch limit) * per-request processing time (including API response time))
+        estimated_seconds = 8 + ((estimated_total_yield / 1000) * 3)
 
         started_at = time.perf_counter()
 
