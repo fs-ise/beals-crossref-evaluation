@@ -214,6 +214,8 @@ class BEALSCrossref:
 
         rec_list = []
 
+        term = term.strip().strip('"').strip()
+
         for record in record_list:
             if record.data.get("title"):
                 if re.search(f"(^|[^a-zA-Z]){term.lower()}([^a-zA-Z]|$)",
